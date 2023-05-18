@@ -1,0 +1,26 @@
+-- A few assumptions:
+
+-> The registry server is hosted at localhost:5555. This address cannot be made available to any normal server.
+-> "None" set to a string, should be interpreted as None
+-> datetime.min set to a google.protobuf.Timestamp, should be interpreted as None
+-> client blocks on read/write/delete ops i.e. they are synchronous calls.
+-> folder for servers has prefix SERVER_ 
+
+
+ 
+
+Suppose client 1 sends write request(create new file) to replica 1( not yet forwarded to PR) and client 2 sends delete request (same file) to replica 2.
+Will replica 2 send FILE DOES NOT EXIST to client 2 ? Not necessary. All delete/write requests are forwarded to Primary Server first.
+
+Quorum_Based Assumptions:
+a) whenever a file that isn't present on a replica is deleted, The server returns FILE NOT EXIST error but stores the mapping of uuid in inmemory_map so that we can use it while determining the latest read on a client side.
+
+  
+
+Command to generate stubs
+python -m grpc_tools.protoc -I C:\Users\91995\Documents\GitHub\DSCD-Winter-2023\assignment2\Quorum_Based_protocol\protos --python_out=. --pyi_out=. --grpc_python_out=. C:\Users\91995\Documents\GitHub\DSCD-Winter-2023\assignment2\Quorum_Based_protocol\protos\readwrite_sys.proto
+
+ 
+
+
+

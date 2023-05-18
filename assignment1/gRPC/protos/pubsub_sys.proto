@@ -1,0 +1,119 @@
+
+
+syntax = "proto3";
+
+package pubsub_system;
+
+import "google/protobuf/timestamp.proto";
+
+message Server {
+    string name = 1;
+    string address = 2;
+}
+
+message Client {
+    string name = 1;
+    string unique_id = 2;
+}
+
+enum ArticleType {
+    NONE = 0;
+    SPORTS = 1;
+    FASHION = 2;
+    POLITICS = 3;
+    BLANK = 4;
+}
+
+message Article {
+    ArticleType type = 1;
+    // string type = 1;
+    string author = 2;
+    google.protobuf.Timestamp time = 3;
+    string content = 4;
+}
+
+// ----------------------------------- RegistryServer -------------------------------- //
+service RegistryService {
+    rpc RegisterServer (RegisterServerRequest) returns (RegisterServerResponse) {}
+    rpc GetServerList (GetServerListRequest) returns (GetServerListResponse) {}
+}
+
+message RegisterServerRequest {
+    string name = 1;
+    string address = 2;
+}
+
+message RegisterServerResponse {
+    string status = 1;
+    string message = 2;
+}
+
+
+message GetServerListRequest {
+    Client client = 1;
+}
+
+message GetServerListResponse {
+    repeated Server server_list = 1;
+}
+
+
+
+
+// ----------------------------------- Server -------------------------------- //
+
+service ServerService {
+    rpc JoinServer (ServerJoinRequest) returns (ServerJoinResponse) {}
+    rpc LeaveServer (ServerLeaveRequest) returns (ServerLeaveResponse) {}
+    rpc GetArticles (GetArticlesRequest) returns (GetArticlesResponse) {}
+    rpc PublishArticle (PublishArticleRequest) returns (PublishArticleResponse) {}
+}
+
+message ServerJoinRequest {
+    string client_id = 1;
+}
+message ServerJoinResponse {
+    string status = 1;
+    string message = 2;
+}
+
+message ServerLeaveRequest {
+    string client_id = 1;
+}
+message ServerLeaveResponse {
+    string status = 1;
+    string message = 2;
+}
+
+message PublishArticleRequest {
+    string client_id = 1;
+    message ArticlePublishFormat {
+        ArticleType type = 1;
+        // string type = 1;
+        string author = 2;
+        string content = 3;
+    }
+    ArticlePublishFormat article = 2;
+}
+
+message PublishArticleResponse {
+    string status = 1;
+    string message = 2;
+}
+
+message GetArticlesRequest {
+    string client_id = 1;
+    message ArticleRequestFormat {
+        ArticleType type = 1;
+        // string type = 1;
+        string author = 2;
+        google.protobuf.Timestamp time = 3;
+    }
+    ArticleRequestFormat article_request = 2;
+}
+
+message GetArticlesResponse {
+    string status = 1;
+    string message = 2;
+    repeated Article articles = 3;
+}

@@ -1,0 +1,2 @@
+I assumed in the project that the two tables will have schema like ("Name","Age") for table1 and ("Name","Role") for table2.
+Also the input and output directories will be given through terminal while running file and M,R will be present in config.txt of input directory.

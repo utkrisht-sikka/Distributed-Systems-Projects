@@ -1,0 +1,4 @@
+Following are some assumptions taken for this case:
+
+- The corresponding data folders for all the replicas are stored in the "data_dir" directory and the names of the folders are prefixed with "SERVER_", followed by the replica number.
+- For returning None in the response fields, we have returned the string "<NONE>" in case of contents, uuid and filenames. IN the case of timestamp (version) the min time "0001-01-01 00:00:00" corresponds to None.

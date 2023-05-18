@@ -1,0 +1,111 @@
+
+
+syntax = "proto3";
+
+package readwrite_system;
+
+import "google/protobuf/timestamp.proto";
+
+message Server {
+    string address = 2;
+}
+
+message Client {
+    string client_id = 1;
+}
+
+// -------------------- Registry Server Service -------------------- //
+
+
+service RegistryService {
+    rpc RegisterServer (RegisterServerRequest) returns (RegisterServerResponse) {}
+    rpc GetReplicaList (GetReplicaListRequest) returns (GetReplicaListResponse) {}
+}
+
+message RegisterServerRequest {
+    string address = 2;
+}
+
+message RegisterServerResponse {
+    string status = 1;
+    string message = 2;
+    string primaryServerAddress = 3;
+}
+
+message GetReplicaListRequest {
+    Client client = 1;
+}
+
+message GetReplicaListResponse {
+    repeated Server replica_list = 1;
+}
+
+
+// ----------------------------------- Server -------------------------------- //
+
+service ServerService {
+    rpc write (WriteRequest) returns (WriteResponse) {}
+    rpc write_PRtoRepl (WritePRtoReplRequest) returns (WritePRtoReplResponse) {}
+    rpc read (ReadRequest) returns (ReadResponse) {}
+    rpc delete (DeleteRequest) returns (DeleteResponse) {}
+    rpc delete_PRtoRepl (DeletePRtoRepl) returns (DeleteResponse) {}
+    rpc NotifyPrimary(NotifyPrimaryRequest) returns (NotifyPrimaryResponse) {}
+}
+
+message WritePRtoReplRequest {
+    string Name = 1;
+    string Content = 2;
+    string uuid = 3;
+    google.protobuf.Timestamp Version = 4;
+}
+
+message WritePRtoReplResponse {
+     string Status = 1;
+}
+
+message NotifyPrimaryRequest {
+    string replicaAddress = 1;
+}
+
+message NotifyPrimaryResponse {
+    string status = 1;
+    string message = 2;
+}
+
+
+message WriteRequest {
+    string Name = 1;
+    string Content = 2;
+    string uuid = 3;
+}
+
+message WriteResponse {
+    string Status = 1;
+    string uuid = 2;
+    google.protobuf.Timestamp Version = 3;
+}
+
+message ReadRequest {
+    string uuid = 1;
+}
+
+message ReadResponse {
+    string Status = 1;
+    string Name = 2;
+    string Content = 3;
+    google.protobuf.Timestamp Version = 4;
+}
+
+message DeleteRequest {
+    string uuid = 1;
+}
+
+message DeleteResponse {
+    string Status = 1;
+}
+
+message DeletePRtoRepl {
+    string uuid = 1;
+    google.protobuf.Timestamp Version = 2;
+}
+ 

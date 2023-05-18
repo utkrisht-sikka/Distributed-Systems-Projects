@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package worker_registration_system;
+
+
+service MasterService {
+    rpc addMapper (AddMapperRequest) returns (GeneralResponse) {}
+    rpc addReducer (AddReducerRequest) returns (GeneralResponse) {}
+    
+
+}
+service MapperService {
+    rpc startComputation(GeneralRequest) returns (GeneralMessageResponse) {}
+    
+
+}
+service ReducerService {
+    rpc startComputation(GeneralRequest) returns (GeneralMessageResponse) {}
+    
+
+}
+
+
+message GeneralResponse{
+    string status = 1;
+}
+
+message GeneralMessageResponse{
+    string message_val = 1;
+}
+
+message GeneralRequest{
+    string message_val = 1;
+}
+
+
+message AddMapperRequest {
+    string ip = 1;
+    string port = 2;
+}
+
+message AddReducerRequest {
+    string ip = 1;
+    string port = 2;
+}
+

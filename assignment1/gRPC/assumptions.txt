@@ -1,0 +1,5 @@
+-- A few assumptions:
+
+-> For specifying a blank field, the user has to input the string '<blank>'; simply an empty string is not considered a "blank" string.
+-> Date format is dd/mm/yyyy
+-> The registry server is hosted at localhost:5555. This address cannot be made available to any normal server.

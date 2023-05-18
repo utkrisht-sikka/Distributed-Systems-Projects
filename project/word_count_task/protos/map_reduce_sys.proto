@@ -1,0 +1,75 @@
+syntax = "proto3";
+
+package map_reduce_sys;
+
+// ------------------------------------------------- Master RPCs ------------------------------------------------------- //
+
+service MasterService {
+    rpc RegisterWorker (RegisterWorkerRequest) returns (RegisterWorkerResponse) {}
+    rpc MapWorkerNotification (MapWorkerNotificationRequest) returns (MapWorkerNotificationResponse) {}
+    rpc ReduceWorkerNotification (ReduceWorkerNotificationRequest) returns (ReduceWorkerNotificationResponse) {}
+}
+
+message RegisterWorkerRequest {
+    string address = 1;
+    string worker_type = 2;
+}
+
+message RegisterWorkerResponse {
+    string status = 1;
+    string message = 2;
+}
+
+message MapWorkerNotificationRequest {
+    string worker_address = 1;
+    string task_status = 2;
+    repeated string partition_files = 3;
+}
+
+message MapWorkerNotificationResponse {
+    string status = 1;
+}
+
+message ReduceWorkerNotificationRequest {
+    string worker_address = 1;
+    string task_status = 2;
+    string reducer_local_output_loc = 3;
+}
+
+message ReduceWorkerNotificationResponse {
+    string status = 1;
+}
+
+// ------------------------------------------------- Mapper RPCs ------------------------------------------------------- //
+
+service MapperService {
+    rpc MapTaskAssignment (MapTaskAssignmentRequest) returns (MapTaskAssignmentResponse) {}
+}
+
+message MapTaskAssignmentRequest {
+    repeated string assigned_input_splits = 1;
+    int32 R = 2;
+}
+
+message MapTaskAssignmentResponse {
+    string status = 1;
+    string message = 2;
+}
+
+// ------------------------------------------------- Reducer RPCs ------------------------------------------------------- //
+
+service ReducerService {
+    rpc ReduceTaskAssignment (ReduceTaskAssignmentRequest) returns (ReduceTaskAssignmentResponse) {}
+}
+
+
+message ReduceTaskAssignmentRequest {
+    repeated string assigned_partitions = 1;
+    int32 reducer_num = 2;
+    string output_data_loc = 3;
+}
+
+message ReduceTaskAssignmentResponse {
+    string status = 1;
+    string message = 2;
+}

@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package map_reduce_sys;
+
+// ------------------------------------------------- Master RPCs ------------------------------------------------------- //
+
+service MasterService {
+    rpc Register (RegisterRequest) returns (Response) {}
+    rpc MapperDone (MapperDoneRequest) returns (Response) {}
+    rpc ReducerDone (ReducerDoneRequest) returns (Response) {}
+
+    
+}
+
+message ReducerDoneRequest {
+    string interim_files = 1;
+    string address = 2;
+}
+
+message MapperDoneRequest {
+    repeated string interim_files = 1;
+    string address = 2;
+    repeated int32 partitions = 4;
+}
+
+message RegisterRequest {
+    string address = 1;
+    string name = 2;
+}
+
+message Response {
+    string status = 1;
+    string message = 2;
+}
+
+
+
+
+// ------------------------------------------------- Mapper RPCs ------------------------------------------------------- //
+
+service MapperService {
+    rpc MapTaskAssignment (MapTaskAssignmentRequest) returns (Response) {}
+}
+
+ 
+
+message MapTaskAssignmentRequest {
+    repeated string assigned_input_splits = 1;
+    repeated int32 DocIDs = 2;
+    int32 R = 3;
+}
+
+ 
+
+// ------------------------------------------------- Reducer RPCs ------------------------------------------------------- //
+
+service ReducerService {
+    rpc ReduceTaskAssignment (ReduceTaskAssignmentRequest) returns (Response) {}
+}
+
+message ReduceTaskAssignmentRequest {
+    repeated string assigned_interim_files = 1;
+    string output_data_loc = 2;
+}
+
+ 
+
+ 

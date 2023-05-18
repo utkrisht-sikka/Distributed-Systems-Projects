@@ -1,0 +1,181 @@
+syntax = "proto3";
+
+package non_blocking_primary_backup_sys;
+
+import "google/protobuf/timestamp.proto";
+
+message Server {
+    string address = 2;
+}
+
+message Client {
+    string name = 1;
+    string client_id = 2;
+}
+
+
+// -------------------- Registry Server Service -------------------- //
+
+
+service RegistryService {
+    rpc RegisterServer (RegisterServerRequest) returns (RegisterServerResponse) {}
+    rpc GetReplicaList (GetReplicaListRequest) returns (GetReplicaListResponse) {}
+}
+
+message RegisterServerRequest {
+    string address = 2;
+}
+
+message RegisterServerResponse {
+    string status = 1;
+    string message = 2;
+    string primaryServerAddress = 3;
+}
+
+message GetReplicaListRequest {
+    
+}
+
+message GetReplicaListResponse {
+    repeated Server replica_list = 1;
+}
+
+
+// -------------------- Replica Server Service -------------------- //
+
+service ServerService {
+    rpc NotifyPrimary(NotifyPrimaryRequest) returns (NotifyPrimaryResponse) {}
+
+    // --- Write Related RPC ----
+    rpc ClientWriteReplica(ClientWriteReplicaRequest) returns (ClientWriteReplicaResponse) {}
+    rpc ForwardWritePrimary(ForwardWritePrimaryRequest) returns (ForwardWritePrimaryResponse) {}
+    rpc PrimaryWriteReplica(PrimaryWriteReplicaRequest) returns (PrimaryWriteReplicaResponse) {}
+    
+
+    // --- Read  Related RPC ----
+    rpc ClientReadReplica(ClientReadReplicaRequest) returns (ClientReadReplicaResponse) {}
+
+    // --- Delete Related RPC ---
+    rpc ClientDeleteReplica(ClientDeleteReplicaRequest) returns (ClientDeleteReplicaResponse) {}
+    rpc ForwardDeletePrimary(ForwardDeletePrimaryRequest) returns (ForwardDeletePrimaryResponse) {}
+    rpc PrimaryDeleteReplica(PrimaryDeleteReplicaRequest) returns (PrimaryDeleteReplicaResponse) {}
+}
+
+message NotifyPrimaryRequest {
+    string replicaAddress = 1;
+}
+
+message NotifyPrimaryResponse {
+    string status = 1;
+    string message = 2;
+}
+
+// ----------- Write Related Message Objects --------------
+
+message ClientWriteReplicaRequest {
+    string name = 1;
+    string content = 2;
+    string uuid = 3;
+}
+
+message ClientWriteReplicaResponse {
+    string status = 1;
+    string uuid = 2;
+    google.protobuf.Timestamp version = 3;
+}
+
+message PrimaryWriteReplicaRequest {
+    string name = 1;
+    string uuid = 2;
+    string content = 3;
+    google.protobuf.Timestamp version = 4;
+}
+
+message PrimaryWriteReplicaResponse {
+    string status = 1;
+    string message = 2;
+}
+
+message ForwardWritePrimaryRequest {
+    string name = 1;
+    string uuid = 2;
+    string content = 3;
+}
+
+message ForwardWritePrimaryResponse {
+    string status = 1;
+    string message = 2;
+    string uuid = 3;
+    google.protobuf.Timestamp version = 4;
+}
+
+
+// ----------- Read Related Message Objects --------------
+
+message ClientReadReplicaRequest {
+    string uuid = 1;
+}
+
+message ClientReadReplicaResponse {
+    string status = 1;
+    string name = 2;
+    string content = 3;
+    google.protobuf.Timestamp version = 4;
+}
+
+// ----------- Delete Related Message Objects --------------
+
+message ClientDeleteReplicaRequest {
+    string uuid = 1;
+}
+
+message ClientDeleteReplicaResponse {
+    string status = 1;
+}
+
+message ForwardDeletePrimaryRequest {
+    string uuid = 1;
+}
+
+message ForwardDeletePrimaryResponse {
+    string status = 1;
+    string message = 2;
+}
+
+message PrimaryDeleteReplicaRequest {
+    string uuid = 1;
+    google.protobuf.Timestamp version = 2;
+}
+
+message PrimaryDeleteReplicaResponse {
+    string status = 1;
+    string message = 2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

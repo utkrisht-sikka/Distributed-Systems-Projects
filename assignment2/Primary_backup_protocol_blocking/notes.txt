@@ -1,0 +1,24 @@
+-- A few assumptions:
+
+-> The registry server is hosted at localhost:5555. This address cannot be made available to any normal server.
+-> "None" set to a string, should be interpreted as None
+-> datetime.min set to a google.protobuf.Timestamp, should be interpreted as None
+-> client blocks on read/write/delete ops i.e. they are synchronous calls.
+-> folder for servers has prefix SERVER_ 
+
+
+ 
+
+Suppose client 1 sends write request(create new file) to replica 1( not yet forwarded to PR) and client 2 sends delete request (same file) to replica 2.
+Will replica 2 send FILE DOES NOT EXIST to client 2 ? Not necessary. All delete/write requests are forwarded to Primary Server first.
+
+  
+
+Command to generate stubs
+python -m grpc_tools.protoc -Iprotos --python_out=. --pyi_out=. --grpc_python_out=. protos/readwrite_sys.proto
+
+ 
+
+
+
+

@@ -1,0 +1,3 @@
+1. All processes are on localhost. So ip is localhost in my case. So for defining a server i have used server_name,server_port .
+2. blank input is '_' for publishing and getting an article. 
+3. date format is dd/mm/yy

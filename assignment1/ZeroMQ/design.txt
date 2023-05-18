@@ -1,0 +1,43 @@
+class Registry_Server binds to 1 socket
+1 socket: taking in registration of the servers.
+server_addresses: stores (name, IPaddress, port) of each live server
+
+class Client connects to sockets of servers and Registry_Server
+
+class Server binds to its own socket
+
+com b/w registry server and other servers will be req-rep
+com b/w registry server and clients will be req-rep
+
+server1 subscribes to server2. Whenever, server2 receives an article, it publishes that article so that server1 automatically gets it.
+SUB PUB b/w server1, server2
+
+Each server will have 2 threads. 1 thread will communicate with the client, 2nd thread will communicate with parent servers and child
+servers.
+
+subcribe(){
+    while(1):
+        block on recv for parent server.
+        {
+            //race condition with GetArticles() and PublishArticle()
+            update articles on this server.
+        }
+        send new articles to child servers.
+}
+
+
+Notes
+1.Instead of server id, put article id with each article.
+2.Let 1 server become child of many servers.
+ZMQ.SUB can connect to multiple ZMQ.PUB (publishers). 
+3.A server can become a client of another server at any given time.
+4.Handle blank type in GetArticles.
+5.make user friendly program. Client should run in a while loop.
+6.What happens when registry server is serving a server and client asks for server list in this time?
+Client's request will arrive to RS but will not be served immediately. First, the registry server completes registering the server. Then, the Registry server serves 
+client's request. Multiple connections are served at the Server using a fair queue.
+
+
+
+
+ 

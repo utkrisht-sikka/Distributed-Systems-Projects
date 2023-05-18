@@ -1,0 +1,2 @@
+1. All processes are on localhost. So ip is localhost.
+2. blank input is '' i.e. just press enter to input a string of length 0.

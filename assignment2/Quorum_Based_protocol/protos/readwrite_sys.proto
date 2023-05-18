@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package readwrite_system;
+
+import "google/protobuf/timestamp.proto";
+
+
+
+// ----------------------------------- Server -------------------------------- //
+
+service ServerService {
+    rpc write (WriteRequest) returns (WriteResponse) {}
+    rpc read (ReadRequest) returns (ReadResponse) {}
+    rpc delete (DeleteRequest) returns (DeleteResponse) {}
+}
+service RegistryServerService {
+    rpc addServer (AddServerRequest) returns (GeneralResponse) {}
+    rpc getServerList (Empty) returns (stream GeneralResponse) {}
+    rpc getReadServers (Empty) returns (stream GeneralResponse) {}
+    rpc getWriteServers (Empty) returns (stream GeneralResponse) {}
+
+}
+
+
+
+
+message Empty {
+
+}
+
+message GeneralResponse{
+    string message_val = 1;
+}
+
+message AddServerRequest {
+    string ip = 1;
+    string port = 2;
+}
+
+message WriteRequest {
+    string name = 1;
+    string content = 2;
+    string uuid = 3;
+}
+
+message WriteResponse {
+    string status = 1;
+    string uuid = 2;
+    google.protobuf.Timestamp version = 3;
+}
+
+message ReadRequest {
+    string uuid = 1;
+}
+
+message ReadResponse {
+    string status = 1;
+    string name = 2;
+    string content = 3;
+    google.protobuf.Timestamp version = 4;
+}
+
+message DeleteRequest {
+    string uuid = 1;
+}
+
+message DeleteResponse {
+    string status = 1;
+}

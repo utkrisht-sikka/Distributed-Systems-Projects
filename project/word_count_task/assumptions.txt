@@ -1,0 +1,10 @@
+- The words are converted to lowercase before the map operation. By this way, the words 'is' and 'Is' are treated the same and so on for other words.
+- The value of 'M' and 'R' are read from the config.txt file. The input files are located in the input directory path provided by the user. The output is written to local directory of each reducer as well as to the output directory as provided by the user.
+- The input files should be named as 'Input_<input_file_number>.txt' in the input directory. The output file is named as 'Output_<output_file_number>.txt'.
+- The directory of mappers and reducers are created inside a folder named 'workers_data_dir'.
+- In the current state of the code, to run:
+Command-> python master.py
+Inputs-> Config file location: <absolute_path_of_config_file>
+         Input Data location: <absolute_path_to_directory_with_input_files>
+         Output Data location: <absolute_path_to_directory_that_stores_output_files>
+         

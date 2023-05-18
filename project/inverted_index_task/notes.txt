@@ -1,0 +1,10 @@
+Command to generate stubs
+python -m grpc_tools.protoc -Iprotos --python_out=. --pyi_out=. --grpc_python_out=. protos/map_reduce_sys.proto
+
+
+Assumptions:
+1. Input files doesnt contain ",".
+2. Map reduce is case insensitive.
+3. Mappers already know map and  partition. Reducers already know reduce and sort functions
+4. Mappers > 1 and Reducers > 1
+5. There will be at least 1 input file.
