@@ -1,1 +1,2 @@
 # DSCD-Winter-2023
+This repo contains my code submissions for Distributed Systems Design and Concept 2023 CSE530. Each folder contains a pdf stating the requirements that our code was expected to meet. 
